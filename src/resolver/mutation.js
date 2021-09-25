@@ -2,6 +2,9 @@ const { prisma } = require("../database.js");
 
 
 const Mutation = {
+    addUser: async (args, req) => { 
+        
+    }
     // signUp: async (args, req) => {
     //     try {
     //       isEmail = validator.isEmail(req.email);
@@ -49,7 +52,7 @@ const Mutation = {
     //   },
 
 
-    
+
   };
 
   module.exports = {
