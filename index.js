@@ -4,15 +4,9 @@ const { ApolloServer } = require('apollo-server')
 const { readFileSync } = require('fs')
 const path = require('path')
 const { prisma } = require("./src/database");
+const { resolvers } = require('./src/resolver')
 
 
-const resolvers = {
-    Query: {
-      getAllAnimals: async (parent, args, context) => {
-        return context.prisma.animal.findMany()
-      }
-    }
-  }
 
   const server = new ApolloServer({
     typeDefs: readFileSync(
@@ -26,7 +20,7 @@ const resolvers = {
   })
 
 server
-  .listen()
+  .listen(3000)
   .then(({ url }) => 
     console.log(`Server is running on ${url}`)
   )
