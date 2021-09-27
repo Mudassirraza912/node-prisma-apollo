@@ -21,6 +21,8 @@ type Query {
 
 type Mutation {
     addUser(email: String!, name: String, password: String): User
+    changePassword(id: Int!, currentPassword: String!, newPassword: String!): User
+    deleteUser(id: Int!): [User]
 }
 
 

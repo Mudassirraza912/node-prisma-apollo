@@ -9,7 +9,15 @@ const Mutation = {
     addUser: async (args, req) => { 
       const response = await AuthServices.createUser(req)     
       return response 
-    }
+    },
+    changePassword: async (args, req) => {
+      const response = await AuthServices.changePassword(req)
+      return response
+    },
+    deleteUser: async (args, req) => {
+      const response = await AuthServices.deleteUser(req)
+      return response
+    },
   };
 
   module.exports = {
