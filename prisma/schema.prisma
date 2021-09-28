@@ -10,13 +10,12 @@ generator client {
   provider = "prisma-client-js"
 }
 
-
 // prisma.schema
 
 model Animal {
-  id      String    @id @unique @default(uuid()) @db.Uuid
-  name    String    @unique
-  fact    String
+  id   String @id @unique @default(uuid()) @db.Uuid
+  name String @unique
+  fact String
 }
 
 model User {
@@ -24,4 +23,18 @@ model User {
   email    String  @unique
   name     String?
   password String?
+  Post     Post[]
 }
+
+model Post {
+  id          Int       @id @default(autoincrement())
+  category    String?
+  color       String?
+  location    String?
+  foundDate   String?
+  title       String
+  description String    @db.VarChar(500)
+  user        User?     @relation(fields: [userId], references: [id])
+  userId      Int?
+}
+

@@ -3,15 +3,14 @@ require('dotenv').config();
 const bcrypt = require('bcryptjs');
 const createError = require('http-errors');
 
-const AuthServices = {
-    async createUser (data) {
+const PostServices = {
+    async createPost (data) {
         const user = await prisma.user.findUnique({
-            where: { email: data.email },
+            where: { id: data.userId },
           })
-          if(user) return createError(401, 'Email Already exist')
-          data.password = bcrypt.hashSync(data.password, 8)
+          if(!user) return createError(401, 'User not exist')
           try {
-            const responseData =  await prisma.user.create({
+            const responseData =  await prisma.post.create({
               data: data
             })
             return responseData
@@ -19,23 +18,12 @@ const AuthServices = {
             return createError(401, error)
           }
     },
-
-    async loginUser (data) {
-        const userExist = await prisma.user.findUnique({
-            where: {email: data.email}
-        })
-        if (!userExist) return createError('404', 'User Not Found!')
-        
-        const checkPassword = bcrypt.compareSync(data.password, userExist.password)
-        if (!checkPassword) return createError('401', 'Email/Password incorrect')
-        delete userExist.password
-        return {...userExist, status: true, message: 'Signin Successful'}
-    },
   
   async changePassword (data) {
       const userExist = await prisma.user.findUnique({
           where: {id: data.id}
       })
+      console.log("data", data)
 
       if (!userExist) return createError('404', 'User Not Found!')
       
@@ -58,26 +46,26 @@ const AuthServices = {
       }
   },
 
-  async deleteUser (data) {
-    const userExist = await prisma.user.findUnique({
+  async deletePost (data) {
+    const userExist = await prisma.post.findUnique({
         where: {id: data.id}
     })
 
-    if (!userExist) return createError('404', 'User Not Found!')
+    if (!userExist) return createError('404', 'Post Not Found!')
     
     try {
-      const responseData = await prisma.user.delete({
+      const responseData = await prisma.post.delete({
         where: {
           id: data.id
         },
       })
 
-      const users = await prisma.user.findMany()
-      return users
+      const posts = await prisma.post.findMany()
+      return posts
     } catch (error) {
       return createError(401, error)
     }
 }
 }
 
-module.exports = AuthServices
+module.exports = PostServices

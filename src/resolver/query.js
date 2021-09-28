@@ -10,7 +10,19 @@ const Query = {
         return response
     },
     getAllUsers: async (args, req, context) => {
-        return await prisma.user.findMany()
+        const response = await prisma.user.findMany({
+            include: {
+                Post: true
+            }
+        })
+        return response
+    },
+    getAllPosts: async (args, req) => {
+        return await prisma.post.findMany({
+            include: {
+                user: true
+            }
+        })
     }
 }
 
