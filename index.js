@@ -20,7 +20,7 @@ const { resolvers } = require('./src/resolver')
   })
 
 server
-  .listen(3000)
+  .listen(process.env.PORT || 3000)
   .then(({ url }) => 
     console.log(`Server is running on ${url}`)
   )
