@@ -1,3 +1,5 @@
+scalar Date
+
 # schema.graphql
 type Animal {
   id: ID!
@@ -11,6 +13,7 @@ type User {
     name: String!
     password: String!
     Post: [Post]
+    isVerified: Boolean
 }
 
 type Post {
@@ -25,6 +28,14 @@ type Post {
   userId:    Int!                          
 }
 
+type Token {
+  id:      Int  
+  userId:  Int
+  token:   String 
+  createdAt:  Date
+}
+
+
 type Query {
   getAllAnimals: [Animal]
   getAllUsers: [User]
@@ -37,6 +48,8 @@ type Mutation {
     changePassword(id: Int!, currentPassword: String!, newPassword: String!): User
     deleteUser(id: Int!): [User]
     addPost(category: String!, color: String!, location: String!, foundDate: String!, title: String!, description: String!, userId: Int!): Post
+    verifyOtp(token: String!, email: String!): User
+    resendOtp(email: String!): User
 }
 
 

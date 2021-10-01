@@ -22,6 +22,14 @@ const Mutation = {
       const response = await PostServices.createPost(req)
       return response
     },
+    verifyOtp: async (args, req) => {
+      const response = await AuthServices.verifyOtp(req)
+      return response
+    },
+    resendOtp: async (args, req) => {
+      const response = await AuthServices.resendOtp(req)
+      return response
+    },
   };
 
   module.exports = {
