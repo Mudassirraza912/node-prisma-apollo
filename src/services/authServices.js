@@ -4,6 +4,8 @@ const bcrypt = require('bcryptjs');
 const createError = require('http-errors');
 const crypto = require('crypto')
 const { signAccessToken } = require("../utils/jwt.js");
+const SendMail = require("./emailServices.js");
+
 
 const AuthServices = {
     async createUser (data) {
@@ -12,19 +14,21 @@ const AuthServices = {
           })
           if(user) return createError(401, 'Email Already exist')
           data.password = bcrypt.hashSync(data.password, 8)
-          const token = await crypto.randomBytes(6)
+          const token = await crypto.randomBytes(3)
           
           // data.token = token
           try {
             const responseData =  await prisma.user.create({
               data: data
             })
+            console.log("token", token)
             const tokenData = await prisma.token.create({
               data: {
                 token: token.toString('hex'),
                 userId: responseData.id
               }
             })
+            SendMail(responseData.email, token.toString('hex'))
             return responseData
           } catch (error) {
             return createError(401, error)
